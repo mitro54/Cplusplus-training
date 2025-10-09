@@ -1,2 +1,3 @@
 # Cplusplus-training
-This repo is meant to act as a place where i can save my learning projects to.
+This repo is meant to act as a place where I can save my smaller learning projects to. 
+It is also meant to act as a semi-accurate representation of my learning journey in C++ and lower-level programming in general.
