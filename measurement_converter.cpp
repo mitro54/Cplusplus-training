@@ -15,19 +15,26 @@ int main(void) {
         std::cout << "... and inches: ";
         std::cin >> in;
 
-        float total_in = (ft * 12) + in;
-        std::cout << "Measurement in meters: " << total_in * .0254 << "m";
+        if (ft >= 0 && in >= 0) {            
+            float total_in = (ft * 12) + in;
+            std::cout << "Measurement in meters: " << total_in * .0254 << "m";
+        } else {
+            std::cout << "Make sure you enter measurements bigger or equal to 0.";
+        }
 
     // imperial
     } else if (msys == 2) {
         std::cout << "Enter measurement in meters: ";
         std::cin >> m;
 
-        float total_in = m / .0254;
-        ft = floor(total_in / 12);
-        in = total_in - (ft * 12);
-
-        std::cout << "Measurement in ft and inches: " << ft << "'" << in << "\"";
+        if (m >= 0) {
+            float total_in = m / .0254;
+            ft = floor(total_in / 12);
+            in = total_in - (ft * 12);
+            std::cout << "Measurement in ft and inches: " << ft << "'" << in << "\"";            
+        } else {
+            std::cout << "Make sure you enter measurements bigger or equal to 0.";
+        }
 
     } else {
         std::cout << "Unrecognized system, select 1 or 2";
