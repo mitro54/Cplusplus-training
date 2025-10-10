@@ -4,8 +4,10 @@ using namespace std;
 
 int main(void) {
     int size;
-    cout << "Provide a size for the rectangle: ";
+    cout << "Provide a size for sides of the rectangle: ";
     cin >> size;
+    if (size >= 0) {
+    size -= 2;
 	cout << '+';
 	for(int i = 0; i < size; i++)
 		cout << '-';
@@ -20,5 +22,8 @@ int main(void) {
 	for(int i = 0; i < size; i++)
 		cout << '-';
 	cout << '+' << endl;
+    } else {
+        cout << "Only positive integers allowed.";
+    }
 	return 0;
 }
