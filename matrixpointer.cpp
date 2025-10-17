@@ -6,11 +6,11 @@ int main(void) {
 
     int *p = (int *)matrix;
 
-    for (int x = 0; x < 10; x++) {
-        for (int y = 0; y < 10; y++) {
+    for (int y = 0; y < 10; y++) {
+        for (int x = 0; x < 10; x++) {
             
-            int *q = p + (x * 10 + y);
-            *q = (x + 1) * (y + 1);
+            int *q = p + (y * 10 + x);
+            *q = (y + 1) * (x + 1);
         }
     }
 
