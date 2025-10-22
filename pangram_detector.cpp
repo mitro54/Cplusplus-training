@@ -4,6 +4,7 @@
 int main(void) {
     std::string input, tester = "abcdefghijklmnopqrstuvwxyz";
     int arr[26] = {};
+    bool is_a_pangram = true;
     std::cout << "Input a sentence: ";
     getline(std::cin, input);
 
@@ -16,10 +17,14 @@ int main(void) {
 
     for (int i = 0; i < 26; i++) {
         if (arr[i] == 0) {
-            std::cout << "Not a pangram";
-            return 0;
+            is_a_pangram = false;
         }
     }
-    std::cout << "Pangram";
+
+    is_a_pangram ? std::cout << "Pangram" : std::cout << "Not pangram";
+    for (int i = 0; i < 26; i++) {
+        std::cout << "\n" << tester[i] << '-' << arr[i];
+    }
+
     return 0;
 }
