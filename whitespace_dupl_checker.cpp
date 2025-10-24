@@ -9,12 +9,13 @@ std::string whitespace_cleaner(std::string str) {
             start = i;
             for (int j = i; j < str.length(); j++) {
                 if (str[j] != ' ') {
-                    end = str[j];
-                    i = j;
-                    std::cout << start << " " << end - start;
-                    str.erase(start, end - start);
+                    end = j - 1;
+                    i = j - 1;
+                    break;
                 }
             }
+            std::cout << start << " " << end - start;
+            str.erase(start, end - start);
         }
     }
     return str;
@@ -24,6 +25,6 @@ int main(void) {
     std::string str;
     // std::cout << "Give a string: ";
     // std::getline(std::cin, str);
-    std::cout << whitespace_cleaner("testing  testing");
+    std::cout << whitespace_cleaner("test  ing          test i  ng");
     return 0;
 }
