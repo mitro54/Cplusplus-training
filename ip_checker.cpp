@@ -3,12 +3,23 @@
 
 std::string ip_checker(std::string ip) {
     int count = 0;
-    std::string tester = "0123456789.";
+    std::string tester = "0123456789.", num;
+
     for (int i = 0; i < ip.length(); i++) {
         if (tester.find(ip[i]) == std::string::npos)
             return "Only digits and dots allowed";
 
-        if (ip[i] == '.') count++;
+        num.push_back(ip[i]);
+
+        if (num.length() > 4)
+            return "Too many characters in a part";
+        else if (std::stoi(num) > 255)
+            return "Too big a value of a part";
+        
+        if (ip[i] == '.') {
+            count++;
+            num = "";
+        }
     }
 
     if (count != 3) {
@@ -16,12 +27,12 @@ std::string ip_checker(std::string ip) {
         return "Incorrect parts count";
     }
 
-    return "ok";
+    return "Correct IP";
 }
 
 int main(void) {
     std::string ip;
-    std::cout << "insert IP: ";
+    std::cout << "Insert IP: ";
     std::cin >> ip;
     std::cout << ip_checker(ip);
     return 0;
