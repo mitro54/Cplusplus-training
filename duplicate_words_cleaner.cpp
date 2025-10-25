@@ -2,23 +2,17 @@
 #include <iostream>
 
 int main() {
-    int start, end;
-    std::string sentence, curr_word, prev_word;
+    int start = 0, end, word_finder;
+    std::string sentence, word;
     std::cout << "Input sentence: ";
     std::getline(std::cin, sentence);
 
-    for (int i = 0; i < sentence.length(); i++) {
-        start = sentence.find(' ');
-        for (int j = start; j < sentence.length(); j++) {
-            if (sentence[j] == ' ') {
-                end = j;
-                prev_word = sentence[start, end];
-                std::cout << prev_word;
-                i = j;
-                break;
-            }
+    while ((end = sentence.find(' ', start)) != std::string::npos) {
+            word = sentence.substr(start, end - start);
+            word_finder = sentence.find(word, end);
+            if (sentence.find(word, end) != std::string::npos)
+                sentence.erase(word_finder, word_finder - start);
+            start = end + 1;
         }
-    }
-
-    // std::cout << sentence;
+    std::cout << sentence;
 }
