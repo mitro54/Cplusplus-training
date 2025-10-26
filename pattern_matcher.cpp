@@ -26,7 +26,7 @@ int main(void) {
                 };
 
             } else if (pattern[j] == 'A') {
-                if (chars.find(sample[i]) != std::string::npos) {
+                if (chars.find(tolower(sample[i])) != std::string::npos) {
                     newstr.push_back(sample[i]);
                     break;
                 } else newstr.erase();
