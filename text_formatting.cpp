@@ -20,7 +20,8 @@ int main() {
 
                 } else if (sentence[j] == '*') {
                     std::string newstr = sentence.substr(i + 1, j - (i + 1));
-                    sentence.erase(i, j - i);
+                    for (char &c : newstr) c = toupper(c);
+                    sentence.erase(i, j + 1 - i);
                     sentence.insert(i, newstr);
                     break;
                 }
