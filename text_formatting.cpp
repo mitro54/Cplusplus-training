@@ -3,11 +3,10 @@
 
 int main() {
     std::string sentence;
-    // std::cout << "Text formatter. * for uppercase, _for spacing.\n";
-    // std::cout << "Examples: *word* will be WORD, _word_ will be w o r d\n";
-    // std::cout << "Enter a text: ";
-    // std::getline(std::cin, sentence);
-    sentence = "This is _really_ important!";
+    std::cout << "Text formatter. * for uppercase, _for spacing.\n";
+    std::cout << "Examples: *word* will be WORD, _word_ will be w o r d\n";
+    std::cout << "Enter a text: ";
+    std::getline(std::cin, sentence);
 
     for (int i = 0; i < sentence.length(); i++) {
         if (sentence[i] == '*') {
@@ -34,6 +33,7 @@ int main() {
                     break;
                 }
             }
+            i = 0;
 
         } else if (sentence[i] == '_') {
             if (sentence.find('_', i + 1) == std::string::npos) {
@@ -63,6 +63,7 @@ int main() {
                     break;
                 }
             }
+            i = 0;
         }
     }
 
