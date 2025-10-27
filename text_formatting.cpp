@@ -57,6 +57,7 @@ int main() {
                         if (newstr[k] != ' ')
                             newstr.insert(k + 1, 1, ' ');
                     }
+                    newstr.erase(newstr.length() - 1);
                     sentence.erase(i, j + 1 - i);
                     sentence.insert(i, newstr);
                     break;
