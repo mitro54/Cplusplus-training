@@ -16,11 +16,10 @@ int main() {
         if (password.length() > 8) l++;
         // isdigit(char), isalpha(char) ispunct(char)
     }
-
+    if (l == 0) std::cout << "The password must be 8 characters long\n";
     if (d == 0) std::cout << "The password must have at least one digit\n";
     if (a == 0) std::cout << "The password must have at least one upper case letter\n"; // doesnt work yet
-    if (p == 0) std::cout << "The password must have at least one digit\n";
-    if (l == 0) std::cout << "The password must be 8 characters long\n";
+    if (p == 0) std::cout << "The password must have at least one special character\n";
 
     return 0;
 }
