@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
 
+std::string key_formatter(std::string k) {
+   return k.insert(0, 1, '[').insert(k.length(), 1, ']');
+}
+
 std::string val_processor(std::string vals) {
     std::string curr_val, key, keys_val;
     for (int i = 0; i < vals.length(); i++) {
@@ -8,12 +12,15 @@ std::string val_processor(std::string vals) {
             curr_val = vals.substr(i, vals.find(','));
             key = curr_val.substr(0, vals.find('='));
             keys_val = curr_val.substr(vals.find('=') + 1);
+
             std::cout << curr_val << "\n";
             std::cout << key << "\n";
             std::cout << keys_val << "\n";
+            std::cout << key_formatter(key) << "\n";
             break;
         }
     }
+    return "thenewstring";
 }
 
 int main(void) {
