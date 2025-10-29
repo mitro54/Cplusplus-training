@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 class Square {
   public:
@@ -26,11 +25,11 @@ void Square::set_side(double side) {
 }
 
 double Square::get_area(void) {
-    if (side_changed) {
-        area = side * side;
-        side_changed = false;
-    }
-    return area;
+  if (side_changed) {
+    area = side * side;
+    side_changed = false;
+  }
+  return area;
 }
 
 void print(Square* square) {
