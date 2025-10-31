@@ -52,28 +52,45 @@ int main() {
   std::cout << "\nCommands: 'add n', 'cancel n', 'quit'\n";
 
   while (true) {
+    int val;
     std::string command;
     std::getline(std::cin, command);
 
     // handle user input
     if (command.find(' ') != std::string::npos) {
       try {
-      int val = std::stoi(command.substr(command.find(' ') + 1));
-      } catch (...) { 
+      val = std::stoi(command.substr(command.find(' ') + 1));
+      } catch (...) {
         std::cout << "In 'command n', n has to be a number!\n";
         booking.printStatus();
-        std::cout << "\nCommands: 'add n', 'cancel n', 'quit'\n";
+        std::cout << "\nCommands: 'add n', 'cancel n', 'quit' or 'exit'\n";
         continue; 
       }
 
+      // add
       if (command.substr(0, command.find(' ')) == "add") {
-        std::cout << command.substr(command.find(' ') + 1);
-      }
-      else if (command.substr(0, command.find(' ')) == "cancel") {
-        std::cout << command.substr(command.find(' ') + 1);
+        int new_flight_res = booking.getReserved() + val;
+        if (100 * new_flight_res / capacity > 105)
+          std::cout << "Cannot perform this operation.\n";
+        else {
+          booking.setReserved(new_flight_res);
+          booking.printStatus();
+          std::cout << std::endl;
+        } 
+
+      // cancel
+      } else if (command.substr(0, command.find(' ')) == "cancel") {
+        int new_flight_res = booking.getReserved() - val;
+        if (new_flight_res < 0)
+          std::cout << "Cannot perform this operation.\n";
+        else {
+          booking.setReserved(new_flight_res);
+          booking.printStatus();
+          std::cout << std::endl;
       }
     }
-    if (command == "quit") break;
+  } // exit
+    if (command == "quit" || command == "exit") break;
   }
 
   return 0;
