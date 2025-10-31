@@ -4,13 +4,13 @@
 class FlightBooking {
 public:
   FlightBooking(int id, int capacity, int reserved = 0);
-  void printStatus();
+  void printStatus() const;
 
   // getters
-  int getCapacity() { return capacity; };
-  int getReserved() { return reserved; };
-  int getId() { return id; }
-  int getCapacityPercentage();
+  int getCapacity() const { return capacity; };
+  int getReserved() const { return reserved; };
+  int getId() const { return id; }
+  int getCapacityPercentage() const;
 
   // setters
   void setCapacity(int capacity) { this->capacity = capacity; };
@@ -22,11 +22,11 @@ private:
   int reserved;
 };
 
-int FlightBooking::getCapacityPercentage() {
+int FlightBooking::getCapacityPercentage() const {
   return (100 * reserved) / capacity;
 }
 
-void FlightBooking::printStatus() {
+void FlightBooking::printStatus() const {
   // format: Flight id_n : res_n/cap_n (x%) seats reserved.
   std::cout << "Flight " << id << " : " << reserved << '/' << capacity
   << " (" << getCapacityPercentage() << "%) seats reserved.";
@@ -35,7 +35,7 @@ void FlightBooking::printStatus() {
 FlightBooking::FlightBooking(int id, int capacity, int reserved) {
   this->id = id;
   this->capacity = (capacity > 1) ? capacity : 1;
-  this->reserved = (reserved > 1) ? reserved : 0;
+  this->reserved = (reserved > 0) ? reserved : 0;
   int init_percentage = (100 * this->reserved) / this->capacity;
   if (init_percentage > 105) this->reserved = (this->capacity * 105) / 100;
 }
@@ -58,36 +58,30 @@ int main() {
     
     std::getline(std::cin, command);
 
+    // define the first part of command as 'action' to improve readability
+    std::string action = command.substr(0, command.find(' '));
+
     // handle user input
     if (command.find(' ') != std::string::npos) {
       try {
         // str to int, substr starting of the first found space + 1 to second found space
         id = std::stoi(command.substr(command.find(' ') + 1, command.find(' ', command.find(' '))));
-        // str to int, substr starting of the second found space to the rest of the str
-        amount = std::stoi(command.substr(command.find(' ', command.find(' ') + 1)));
+        if (action != "delete")
+          // str to int, substr starting of the second found space to the rest of the str
+          amount = std::stoi(command.substr(command.find(' ', command.find(' ') + 1)));
       } catch (...) {
-        if (command.substr(0, command.find(' ')) == "delete") {
-          for (int i = 0; i < bookings.size(); i++) {
-            if (bookings[i].getId() == id) {
-              bookings.erase(bookings.begin() + i);
-              break;
-            }
-          }
-          // prevent the couts from running on delete
-          continue;
-        }
         std::cout << "In 'command n n', n has to be a number!\n";
         std::cout << "Commands: 'create/add/cancel flight_n seats_n', 'delete flight_n', 'quit' or 'exit'\n\n";
         continue;
       }
 
       // create
-      if (command.substr(0, command.find(' ')) == "create") {
+      if (action == "create") {
         FlightBooking booking(id, amount);
         bookings.push_back(booking);
 
       // add
-      } else if (command.substr(0, command.find(' ')) == "add") {
+      } else if (action == "add") {
         for (FlightBooking& booking : bookings) {
           if (booking.getId() == id) {
             int new_flight_res = booking.getReserved() + amount;
@@ -100,7 +94,7 @@ int main() {
         }
 
       // cancel
-      } else if (command.substr(0, command.find(' ')) == "cancel") {
+      } else if (action == "cancel") {
         for (FlightBooking& booking : bookings)
           if (id == booking.getId()) {
             int new_flight_res = booking.getReserved() - amount;
@@ -108,9 +102,18 @@ int main() {
               std::cout << "Cannot perform this operation.\n";
             else {
               booking.setReserved(new_flight_res);
+            }
+          }
+
+      // delete
+      } else if (action == "delete") {
+        for (int i = 0; i < bookings.size(); i++) {
+          if (bookings[i].getId() == id) {
+            bookings.erase(bookings.begin() + i);
+            break;
+          }
         }
       }
-    }
   } // exit
     if (command == "quit" || command == "exit") break;
   }
