@@ -42,11 +42,6 @@ FlightBooking::FlightBooking(int id, int capacity, int reserved) {
 
 int main() {
   std::vector<FlightBooking> bookings;
-  //int reserved = 0, capacity = 0;
-
-  //FlightBooking booking(1, capacity, reserved);
-
-  //booking.printStatus();
 
   while (true) {
     int id, amount;
@@ -71,9 +66,19 @@ int main() {
         // str to int, substr starting of the second found space to the rest of the str
         amount = std::stoi(command.substr(command.find(' ', command.find(' ') + 1)));
       } catch (...) {
+        if (command.substr(0, command.find(' ')) == "delete") {
+          for (int i = 0; i < bookings.size(); i++) {
+            if (bookings[i].getId() == id) {
+              bookings.erase(bookings.begin() + i);
+              break;
+            }
+          }
+          // prevent the couts from running on delete
+          continue;
+        }
         std::cout << "In 'command n n', n has to be a number!\n";
-        std::cout << "\nCommands: 'create/add/cancel flight_n seats_n', 'delete flight_n', 'quit' or 'exit'\n";
-        continue; 
+        std::cout << "Commands: 'create/add/cancel flight_n seats_n', 'delete flight_n', 'quit' or 'exit'\n\n";
+        continue;
       }
 
       // create
