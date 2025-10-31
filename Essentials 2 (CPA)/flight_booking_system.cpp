@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 
 class FlightBooking {
 public:
@@ -50,7 +51,7 @@ int main() {
       std::cout << "No flights in the system\n"
       << "Commands: 'create/add/cancel n n', 'delete n' 'exit/quit'\n";
     else {
-      for (FlightBooking booking : bookings) {
+      for (FlightBooking& booking : bookings) {
         booking.printStatus();
         std::cout << std::endl;
       }
@@ -65,7 +66,7 @@ int main() {
     if (command.find(' ') != std::string::npos) {
       try {
         // str to int, substr starting of the first found space + 1 to second found space
-        id = std::stoi(command.substr(command.find(' ') + 1, command.find(' ', command.find(' '))));
+        id = std::stoi(command.substr(command.find(' ') + 1, command.size() - command.find(' ', command.find(' '))));
         if (action != "delete")
           // str to int, substr starting of the second found space to the rest of the str
           amount = std::stoi(command.substr(command.find(' ', command.find(' ') + 1)));
