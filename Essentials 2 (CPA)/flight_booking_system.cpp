@@ -32,10 +32,10 @@ void FlightBooking::printStatus() {
 
 FlightBooking::FlightBooking(int id, int capacity, int reserved) {
   this->id = id;
-  int init_percentage = (100 * reserved) / capacity;
-  if (init_percentage > 105) reserved = (capacity * 105) / 100;
-  this->capacity = (capacity > 0) ? capacity : 0;
-  this->reserved = (reserved > 0) ? reserved : 0;
+  this->capacity = (capacity > 1) ? capacity : 1;
+  this->reserved = (reserved > 1) ? reserved : 0;
+  int init_percentage = (100 * this->reserved) / this->capacity;
+  if (init_percentage > 105) this->reserved = (this->capacity * 105) / 100;
 }
 
 int main() {
@@ -70,7 +70,7 @@ int main() {
       // add
       if (command.substr(0, command.find(' ')) == "add") {
         int new_flight_res = booking.getReserved() + val;
-        if (100 * new_flight_res / capacity > 105)
+        if (100 * new_flight_res / booking.getCapacity() > 105)
           std::cout << "Cannot perform this operation.\n";
         else {
           booking.setReserved(new_flight_res);
