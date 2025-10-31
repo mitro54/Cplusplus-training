@@ -4,7 +4,7 @@ class FlightBooking {
 public:
   FlightBooking(int id, int capacity, int reserved);
   void printStatus();
-  
+
   // getters
   int getCapacity() { return capacity; };
   int getReserved() { return reserved; };
@@ -13,6 +13,7 @@ public:
   // setters
   void setCapacity(int capacity) { this->capacity = capacity; };
   void setReserved(int reserved) { this->reserved = reserved; };
+
 private:
   int id;
   int capacity;
@@ -48,6 +49,32 @@ int main() {
   FlightBooking booking(1, capacity, reserved);
 
   booking.printStatus();
+  std::cout << "\nCommands: 'add n', 'cancel n', 'quit'\n";
+
+  while (true) {
+    std::string command;
+    std::getline(std::cin, command);
+
+    // handle user input
+    if (command.find(' ') != std::string::npos) {
+      try {
+      int val = std::stoi(command.substr(command.find(' ') + 1));
+      } catch (...) { 
+        std::cout << "In 'command n', n has to be a number!\n";
+        booking.printStatus();
+        std::cout << "\nCommands: 'add n', 'cancel n', 'quit'\n";
+        continue; 
+      }
+
+      if (command.substr(0, command.find(' ')) == "add") {
+        std::cout << command.substr(command.find(' ') + 1);
+      }
+      else if (command.substr(0, command.find(' ')) == "cancel") {
+        std::cout << command.substr(command.find(' ') + 1);
+      }
+    }
+    if (command == "quit") break;
+  }
 
   return 0;
 }
