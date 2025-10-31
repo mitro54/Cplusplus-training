@@ -8,11 +8,13 @@ public:
   // getters
   int getCapacity() { return capacity; };
   int getReserved() { return reserved; };
+  int getId() { return id; }
   int getCapacityPercentage();
 
   // setters
   void setCapacity(int capacity) { this->capacity = capacity; };
   void setReserved(int reserved) { this->reserved = reserved; };
+  void setId(int id) { this->id = id;}
 
 private:
   int id;
@@ -40,6 +42,7 @@ FlightBooking::FlightBooking(int id, int capacity, int reserved) {
 
 int main() {
   int reserved = 0, capacity = 0;
+  std::cout << "No flights in the system\n";
   std::cout << "Provide flight capacity: ";
   std::cin >> capacity;
 
@@ -52,24 +55,39 @@ int main() {
   std::cout << "\nCommands: 'add n', 'cancel n', 'quit'\n";
 
   while (true) {
-    int val;
+    int val1, val2;
     std::string command;
     std::getline(std::cin, command);
 
-    // handle user input
+    // handle user input  
     if (command.find(' ') != std::string::npos) {
       try {
-      val = std::stoi(command.substr(command.find(' ') + 1));
+        // str to int, substr starting of the first found space + 1 to second found space
+        val1 = std::stoi(command.substr(command.find(' ') + 1, command.find(' ', command.find(' '))));
+        // str to int, substr starting of the second found space to the rest of the str
+        val2 = std::stoi(command.substr(command.find(' ', command.find(' ') + 1)));
+        std::cout << val1 << val2;
       } catch (...) {
-        std::cout << "In 'command n', n has to be a number!\n";
+        std::cout << "In 'command n n', n has to be a number!\n";
         booking.printStatus();
-        std::cout << "\nCommands: 'add n', 'cancel n', 'quit' or 'exit'\n";
+        std::cout << "\nCommands: 'create/add/cancel flight_n seats_n', 'delete flight_n', 'quit' or 'exit'\n";
         continue; 
       }
 
+      // create
+      if (command.substr(0, command.find(' ')) == "create") {
+        int new_flight_res = booking.getReserved() + val1;
+        if (100 * new_flight_res / booking.getCapacity() > 105)
+          std::cout << "Cannot perform this operation.\n";
+        else {
+          booking.setReserved(new_flight_res);
+          booking.printStatus();
+          std::cout << std::endl;
+        }
+
       // add
-      if (command.substr(0, command.find(' ')) == "add") {
-        int new_flight_res = booking.getReserved() + val;
+      } else if (command.substr(0, command.find(' ')) == "add") {
+        int new_flight_res = booking.getReserved() + val1;
         if (100 * new_flight_res / booking.getCapacity() > 105)
           std::cout << "Cannot perform this operation.\n";
         else {
@@ -80,7 +98,7 @@ int main() {
 
       // cancel
       } else if (command.substr(0, command.find(' ')) == "cancel") {
-        int new_flight_res = booking.getReserved() - val;
+        int new_flight_res = booking.getReserved() - val1;
         if (new_flight_res < 0)
           std::cout << "Cannot perform this operation.\n";
         else {
