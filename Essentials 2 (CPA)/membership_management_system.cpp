@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <sstream>
 
 class Membership {
 public:
-  Membership(int id, int valid_for, std::string name);
+  Membership(int id, std::string name, int valid_for = 0);
   void printStatus() const;
 
   // getters
@@ -21,17 +23,47 @@ private:
   std::string name;
 };
 
-Membership::Membership(int id, int valid_for, std::string name) {
-  this->id = id;
-  this->valid_for = valid_for;
+Membership::Membership(int id, std::string name, int valid_for) {
+  this->id = (id > 0) ? id : 1;
+  this->valid_for = (valid_for < 0) ? 0 : valid_for;
   this->name = name;
 }
 
 void Membership::printStatus() const {
   std::cout << "Member " << id << " : " << name << ", subscription valid for " 
-  << valid_for << (valid_for == 1) ? " month" : " months"; 
+  << valid_for << " months\n"; 
 }
 
 int main(void) {
+  std::vector<Membership> members;
+  while (true) {
+    std::string cmd, action, name;
+    int id, amount;
+    std::cout << "Commands: create/extend id len, delete/cancel id, quit\n";
+    if (members.size() == 0)
+      std::cout << "No members in the system\n";
+    else {
+      for (auto& member : members)
+        member.printStatus();
+        std::cout << std::endl;
+    }
+
+    // get the input, use istringstream, then parse input to action
+    std::getline(std::cin, cmd);
+    std::istringstream iss(cmd);
+    iss >> action;
+
+    if (action == "create") {
+      iss >> id >> name;
+      Membership member(id, name);
+      members.push_back(member);
+    } else if (action == "extend") {
+      iss >> id >> amount;
+    } else if (action == "cancel") {
+      iss >> id;
+    } else if (action == "delete") {
+      iss >> id;
+    }
+  }
   return 0;
 }
