@@ -52,29 +52,52 @@ int main(void) {
 
     // get the input, use istringstream, then parse input to action
     std::getline(std::cin, cmd);
+    if (cmd.empty()) continue;
+
     std::istringstream iss(cmd);
     iss >> action;
+    if (action == "quit") break;
     iss >> id;
 
     try {
       if (action == "create") {
         std::getline(iss, name);
         name = name.substr(1);
+
+        bool exists = false;
+        for (auto& member : members) if (member.getId() == id) { exists = true; break; }
+        if (exists) {std::cout << "A member with that id already exists!\n\n"; continue; }
+
         Membership member(id, name);
         members.push_back(member);
+
       } else if (action == "extend") {
-        iss >> amount;
+          iss >> amount;
+          for (auto& member : members) {
+            if (member.getId() == id) {
+              member.setValidity(member.getValidity() + amount);
+              break;
+            }
+        }
+
+      } else if (action == "cancel") {
         for (auto& member : members) {
           if (member.getId() == id) {
-            member.setValidity(member.getValidity() + amount);
+            member.setValidity(0);
+            break;
           }
         }
-      } else if (action == "cancel") {
-        iss >> id;
+
       } else if (action == "delete") {
-        iss >> id;
-      }
-    } catch (...) { std::cout << "Unable to perform this operation.\n"; }
-  }
+          for (int i = 0; i < members.size(); i++) {
+            if (members[i].getId() == id) {
+              members.erase(members.begin() + i);
+              break;
+            }
+          }
+        }
+
+      } catch (...) { std::cout << "Unable to perform this operation.\n"; }
+    }
   return 0;
 }
