@@ -19,9 +19,28 @@ Fraction::Fraction(int num, int deno) {
 }
 
 std::string Fraction::toString() {
-  if (numerator >= denominator) {}
-  else {
+  std::string fracstr;
+  if (numerator != fabs(numerator) && denominator != fabs(denominator) && fabs(numerator) < fabs(denominator))
     return std::to_string(numerator) + '/' + std::to_string(denominator);
+
+  if (numerator != fabs(numerator) || denominator != fabs(denominator) && fabs(numerator) < fabs(denominator)) {
+    std::cout << "ye\n";
+    fracstr + "-";
+    return fracstr + std::to_string(numerator) + '/' + std::to_string(denominator);
+
+  } else if (fabs(numerator) >= fabs(denominator)) {
+    int count = 0, new_num = numerator;
+    for (int i = fabs(denominator); i <= fabs(numerator); i += fabs(denominator)) {
+      count++;
+    }
+    if (count > 0) {
+      fracstr += std::to_string(count) + " ";
+      new_num -= (denominator * count);
+    }
+    return fracstr + std::to_string(new_num) + '/' + std::to_string(denominator);
+
+  } else {
+    return fracstr + std::to_string(numerator) + '/' + std::to_string(denominator);
   }
 }
 
