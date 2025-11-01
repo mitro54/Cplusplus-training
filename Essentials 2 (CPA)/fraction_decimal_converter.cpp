@@ -26,6 +26,7 @@ std::string Fraction::toString() {
     for (int i = fabs(denominator); i <= fabs(numerator); i += fabs(denominator)) {
       count++;
     }
+    // this runs only if numerator > denominator
     if (count > 0) {
       if (numerator > 0 && denominator > 0)
         new_num -= (denominator * count);
@@ -37,11 +38,15 @@ std::string Fraction::toString() {
       }
       fracstr += std::to_string(count);
     }
+    // returns whole if it evens out, otherwise returns whole + fracs
     if (new_num == 0) return fracstr;
     return fracstr + " " + std::to_string(int(fabs(new_num))) + '/' + std::to_string(int(fabs(denominator)));
 
+  // if only fracs,  it returns fracs
   } else {
-    return fracstr + std::to_string(numerator) + '/' + std::to_string(denominator);
+      if (numerator < 0 && denominator > 0) fracstr += "-";
+      else if (numerator > 0 && denominator < 0) fracstr += "-";
+    return fracstr + std::to_string(int(fabs(numerator))) + '/' + std::to_string(int(fabs(denominator)));
   }
 }
 
