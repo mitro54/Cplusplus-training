@@ -1,3 +1,4 @@
+// sivu 124
 #include <iostream>
 #include <vector>
 #include <stdexcept>
@@ -14,47 +15,40 @@ public:
 // doubly LinkedList that contains only the necessary methods to create queues and dequeues
 class LinkedListQueue {
 private:
-    Node *sentinel;
+    Node* top_sentinel;
+    Node* bottom_sentinel;
 
 public:
     LinkedListQueue() {
-        sentinel = new Node(0);
-        sentinel->next = nullptr;
-        sentinel->prev = nullptr;
+        top_sentinel = new Node(0);
+        bottom_sentinel = new Node(0);
+        top_sentinel->next = bottom_sentinel;
+        top_sentinel->prev = nullptr;
+        bottom_sentinel->prev = top_sentinel;
+        bottom_sentinel->next = nullptr;
     }
 
     // pushes node to the queue
-    void enqueue(int value) {
-        Node *new_cell = new Node(value);
-        new_cell->next = sentinel->next;
-        new_cell->prev = sentinel;
-
-        if (sentinel->next)
-            sentinel->next->prev = new_cell;
-        else
-            sentinel->prev = new_cell;
-
-        sentinel->next = new_cell;
-        if (!sentinel->prev) sentinel->prev = new_cell;
+    void enqueue(int new_value) {
+        // make a cell to hold the new value
+        Node* new_cell = new Node(new_value);
+        // add the new cell to the linked list
+        new_cell->next = top_sentinel->next;
+        new_cell->prev = top_sentinel;
+        top_sentinel->next->prev = new_cell;
+        top_sentinel->next = new_cell;
     }
 
     // removes the node from queue
     int dequeue() {
-        // make sure there is an item to dequeue
-        if (sentinel->prev == nullptr) throw std::runtime_error("queue is empty");
+        // make sure there is a n item to dequeue
+        if (bottom_sentinel->prev == top_sentinel) throw std::runtime_error("queue is empty");
         // get the bottom cells value
-        Node *bottom = sentinel->prev;
+        Node* bottom = bottom_sentinel->prev;
         int result = bottom->value;
-        Node *new_bottom = bottom->prev;
         // remove the bottom cell from the linked list
-        if (new_bottom == sentinel) {
-            sentinel->next = nullptr;
-            sentinel->prev = nullptr;
-        } else {
-            new_bottom->next = nullptr;
-            sentinel->prev = new_bottom;
-        }
-
+        bottom_sentinel->prev = bottom->prev;
+        bottom_sentinel->prev->next = bottom_sentinel;
         delete bottom;
         return result;
     }
@@ -62,12 +56,13 @@ public:
     // prints the queue
     void print() const {
         std::cout << "Queue: ";
-        for (Node *cur = sentinel->next; cur; cur = cur->next)
-            std::cout << cur->value << ' ';
+        for (Node* current = top_sentinel->next; current != bottom_sentinel; current = current->next)
+            std::cout << current->value << ' ';
         std::cout << '\n';
     }
 };
 
+// testing setup
 int main(void) {
     LinkedListQueue q;
     q.enqueue(1);
@@ -80,5 +75,4 @@ int main(void) {
     std::cout << q.dequeue() << '\n';
     std::cout << q.dequeue() << '\n';
     q.print();
-    return 0;
 }
