@@ -20,3 +20,10 @@ void enqueue(const Item& item) {
     // place value at the correct spot
     open_list[i + 1] = item;
 }
+
+// pop the best from front
+Item pop_front() {
+    Item best = open_list.front();
+    open_list.erase(open_list.begin());
+    return best;
+}
