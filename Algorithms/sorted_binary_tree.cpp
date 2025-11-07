@@ -46,6 +46,55 @@ public:
     }
 };
 
+// helpers for deletion
+// Return pointer to the node with the minimum value in this subtree.
+Node* find_min(Node* node) {
+    while (node && node->left) node = node->left;
+    return node;
+}
+
+// Recursively remove `target` from subtree rooted at `root`.
+// Return the (possibly new) subtree root after deletion.
+Node* remove_rec(Node* root, int target) {
+    if (!root) return nullptr;
+
+    if (target < root->value) {
+        // Go left.
+        root->left = remove_rec(root->left, target);
+    } else if (target > root->value) {
+        // Go right.
+        root->right = remove_rec(root->right, target);
+    } else {
+        // Found the node to delete.
+
+        // Case 1: no children (leaf)
+        if (!root->left && !root->right) {
+            delete root;
+            return nullptr;
+        }
+
+        // Case 2: one child (only right or only left)
+        if (!root->left) {
+            Node* r = root->right;
+            delete root;
+            return r;
+        }
+        if (!root->right) {
+            Node* l = root->left;
+            delete root;
+            return l;
+        }
+
+        // Case 3: two children.
+        // Find in-order successor (smallest in right subtree),
+        // copy its value here, then delete the successor node.
+        Node *succ = find_min(root->right);
+        root->value = succ->value;
+        root->right = remove_rec(root->right, succ->value);
+    }
+    return root;
+}
+
 class BinaryTree {
 public:
     Node *root;
@@ -66,11 +115,13 @@ public:
         return root->FindNode(target);
     }
 
-    // print inorder
-    void print() const {
-        print_rec(root);
-        std::cout << "\n";
+    void erase(int target) {
+        root = remove_rec(root, target);
     }
+
+    void print() const { print_rec(root); std::cout << "\n"; }
+
+    ~BinaryTree() { destroy(root); }
 
 private:
     void print_rec(Node* node) const {
@@ -79,21 +130,23 @@ private:
         std::cout << node->value << " ";
         print_rec(node->right);
     }
+
+    void destroy(Node* n) {
+        if (!n) return;
+        destroy(n->left);
+        destroy(n->right);
+        delete n;
+    }
 };
 
 int main() {
-    BinaryTree tree;
-    tree.insert(5);
-    tree.insert(2);
-    tree.insert(8);
-    tree.insert(1);
-    tree.insert(3);
-    tree.print();
+    BinaryTree t;
+    for (int v : {4, 2, 10, 1, 3, 7, 8, 6, 9, 5}) t.insert(v);
+    t.print();
 
-    Node *found = tree.find(3);
-    if (found)
-        std::cout << "Found: " << found->value << "\n";
-    else
-        std::cout << "Not found\n";
+    t.erase(1);  t.print(); // delete leaf
+    t.erase(7);  t.print(); // delete node with two children (8)
+    t.erase(2);  t.print(); // delete node with one child (2 had left= null, right=3 after 1 removed)
+    t.erase(42); t.print(); // deleting non-existent value = no change
     return 0;
 }
