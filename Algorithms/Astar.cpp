@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cmath>
 
 struct Cell {
     int x, y; // grid pos
@@ -31,6 +32,11 @@ Cell pop_front() {
     return best;
 }
 
+// manhattan distance for heuristic
+int h(int x, int y, int gx, int gy) {
+    return std::abs(x - gx) + std::abs (y - gy);
+}
+
 // equation F = G + H , G movement cost from point A to given square on grid
 // following the path generated to get there, 10 for x or y, 14 for x & y
 // H is the estimated movemenet cost to move from that given square on the grid to the final destination point B
@@ -42,12 +48,28 @@ int main(void) {
     // the map, a grid
     // ' ' = free, # = wall, S = start, G = goal
     std::vector<std::string> grid = {
-        "S    ###",
-        "####    ",
-        "G###### ",
-        " #      ",
-        "   ##   "
+        "S     ####         #####              ",
+        "## ##     ##   ##       #######       ",
+        "##    ### ##   ##   ##       ##       ",
+        "##   #### ##   ##   ##   ##  ##   ### ",
+        "##        ##        ##   ##       ##  ",
+        "###### ###########  ##   ##########   ",
+        "##         ##       ##         ##     ",
+        "##   #######   ########   ########### ",
+        "##   ##            ###          ##    ",
+        "###  #########   #######   ########   ",
+        "##        ##   ###      ###       ##  ",
+        "########  ##   ##   ##   ##   ##  ##  ",
+        "##        ##        ##        ##  ##  ",
+        "##   ########   ########   ########   ",
+        "##          ##          ##            ",
+        "##########  ##########   #########    ",
+        "##              ##       ##           ",
+        "##   ########   ##   ########   ####  ",
+        "##       ##         ##               G",
+        "######################################"
     };
+
     // need grids size for loops
     const int height = grid.size();
     const int width = grid[0].size();
@@ -87,12 +109,16 @@ int main(void) {
 
     // the start setup
     g[start_y][start_x] = 0;
-    enqueue({start_x, start_y, 0}); // f = g = 0
+    enqueue({start_x, start_y, h(start_x, start_y, goal_x, goal_y)}); // A* f = g + h , bfs with f = g = 0
 
-    // the bfs loop
+    // the main loop
     while (!open_list.empty()) {
         Cell current = pop_front();
         int x = current.x, y = current.y;
+
+        // Skip stale entries (older, worse f for this cell)
+        int best_f_here = (g[y][x] >= inf) ? inf : g[y][x] + h(x, y, goal_x, goal_y);
+        if (current.f != best_f_here) continue;
 
         if (x == goal_x && y == goal_y) break;
 
@@ -101,10 +127,13 @@ int main(void) {
         int new_x = x + dx[dir], new_y = y + dy[dir];
         if (new_x < 0 || new_x >= width || new_y < 0 || new_y >= height) continue; // skip out of bounds cells
         if (grid[new_y][new_x] == '#') continue; // and skip walls
-        if (g[new_y][new_x] > g[y][x] + 1) {
-            g[new_y][new_x] = g[y][x] + 1;
+
+        int tentative_g = g[y][x] + 1; // cost to move to neighbor
+        if (tentative_g < g[new_y][new_x]) {
+            g[new_y][new_x] = tentative_g;
             prev[new_y][new_x] = {y, x};
-            enqueue({new_x, new_y, g[new_y][new_x]});
+            int f = tentative_g + h(new_x, new_y, goal_x, goal_y);
+            enqueue({new_x, new_y, f});
             }
         }
     }
