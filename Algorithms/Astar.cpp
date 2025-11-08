@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 
 struct Item {
     int x, y; // grid pos
@@ -34,4 +35,20 @@ Item pop_front() {
 // H is the estimated movemenet cost to move from that given square on the grid to the final destination point B
 // often referred as the heuristic, its a guess
 
+// we need to implement bfs (breadth first search first), for that we need a grid
 
+int main(void) {
+    // the map, a grid, ' ' = free, # = wall, S = start, G = goal
+    std::vector<std::string> grid = {
+        "S    ###",
+        "####    ",
+        "G###### ",
+        " #      ",
+        "   ##   "
+    };
+    // need grids size for loops
+    const int height = grid.size();
+    const int width = grid[0].size();
+
+    return 0;
+}
