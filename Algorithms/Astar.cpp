@@ -38,7 +38,8 @@ Item pop_front() {
 // we need to implement bfs (breadth first search first), for that we need a grid
 
 int main(void) {
-    // the map, a grid, ' ' = free, # = wall, S = start, G = goal
+    // the map, a grid
+    // ' ' = free, # = wall, S = start, G = goal
     std::vector<std::string> grid = {
         "S    ###",
         "####    ",
@@ -49,6 +50,24 @@ int main(void) {
     // need grids size for loops
     const int height = grid.size();
     const int width = grid[0].size();
+    int start_x = -1, start_y = -1, goal_x = -1, goal_y = -1;
+
+    // find start and goal coordinates
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++) {
+            if (grid[y][x] == 'S') {
+                start_x = x;
+                start_y = y;
+            }
+            if (grid[y][x] == 'G') {
+                goal_x = x;
+                goal_y = y;
+            }
+        }
+    // if not found, cannot continue
+    if (start_x == -1 || goal_x == -1) throw std::runtime_error("start or goal is missing");
+
+    std::cout << start_x << ',' << start_y << ' ' << goal_x << ',' << goal_y;
 
     return 0;
 }
