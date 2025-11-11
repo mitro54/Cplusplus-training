@@ -1,9 +1,15 @@
 #include <iostream>
+#include <string>
+#include <cmath>
 
 class Point2D {
 public:
   Point2D(double x, double y);
   std::string toString();
+  // getters
+  double get_x() const { return x; };
+  double get_y() const { return y; };
+
 private:
   double x;
   double y;
@@ -18,3 +24,37 @@ private:
   double slope;
   double y_intercept;
 };
+
+Point2D::Point2D(double x, double y) {
+  this->x = x;
+  this->y = y;
+}
+
+Line2D::Line2D(double slope, double y_intercept) {
+  this->slope = slope;
+  this->y_intercept = y_intercept;
+}
+
+Line2D::Line2D(Point2D pointA, Point2D pointB) {
+  this->slope = (pointB.get_y() - pointA.get_y()) / (pointB.get_x() - pointA.get_x());
+}
+
+int main(void) {
+  std::string input1, input2;
+  double x1, x2, y1, y2;
+  std::cout << "Input two sets of x,y coordinates separated by a comma.\n";
+  std::getline(std::cin, input1);
+  std::getline(std::cin, input2);
+
+  if (input1.find(',') != std::string::npos) {
+      x1 = std::stod(input1.substr(0, input1.find(',')));
+      x2 = std::stod(input2.substr(0, input2.find(',')));
+      y1 = std::stod(input1.substr(input1.find(',') + 1));
+      y2 = std::stod(input2.substr(input2.find(',') + 1));
+      Point2D p1(x1, y1);
+      Point2D p2(x2, y2);
+      // std::cout << p1.distanceTo(p2);
+  }
+
+  return 0;
+}
