@@ -5,7 +5,6 @@
 class Point2D {
 public:
   Point2D(double x, double y);
-  std::string toString();
   // getters
   double get_x() const { return x; };
   double get_y() const { return y; };
@@ -19,7 +18,7 @@ class Line2D {
 public:
   Line2D(double slope, double y_intercept);
   Line2D(Point2D pointA, Point2D pointB);
-  std::string toString();
+  void toString();
 private:
   double slope;
   double y_intercept;
@@ -36,7 +35,16 @@ Line2D::Line2D(double slope, double y_intercept) {
 }
 
 Line2D::Line2D(Point2D pointA, Point2D pointB) {
-  this->slope = (pointB.get_y() - pointA.get_y()) / (pointB.get_x() - pointA.get_x());
+  double a = (pointB.get_y() - pointA.get_y()) / (pointB.get_x() - pointA.get_x());
+  double b = (pointB.get_y() - (a * pointB.get_x()));
+  this->slope = a;
+  this->y_intercept = b;
+}
+
+void Line2D::toString() {
+  std::string sign = (y_intercept >= 0) ? "+ " : "- ";
+  std::cout << "y = " << slope << "x " << sign;
+  std::cout << fabs(y_intercept);
 }
 
 int main(void) {
@@ -53,7 +61,8 @@ int main(void) {
       y2 = std::stod(input2.substr(input2.find(',') + 1));
       Point2D p1(x1, y1);
       Point2D p2(x2, y2);
-      // std::cout << p1.distanceTo(p2);
+      Line2D line(p1, p2);
+      line.toString();
   }
 
   return 0;
