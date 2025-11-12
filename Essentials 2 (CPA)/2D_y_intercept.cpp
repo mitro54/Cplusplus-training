@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <cmath>
 
 class Point2D {
@@ -16,9 +17,13 @@ private:
 
 class Line2D {
 public:
+  // getters
+  double get_y() { return y_intercept; }
+  double get_slope() { return slope; }
   Line2D(double slope, double y_intercept);
   Line2D(Point2D pointA, Point2D pointB);
   void toString();
+  void contains(Line2D other);
 private:
   double slope;
   double y_intercept;
@@ -47,22 +52,33 @@ void Line2D::toString() {
   std::cout << fabs(y_intercept);
 }
 
+void Line2D::contains(Line2D other) {
+  if (this->get_y() == other.get_y() && this->get_slope() == other.get_slope())
+    std::cout << "collinear";
+  else std::cout << "not collinear";
+}
+
 int main(void) {
-  std::string input1, input2;
-  double x1, x2, y1, y2;
+  std::string input1, input2, point;
+  double x1, x2, x3, y1, y2, y3;
   std::cout << "Input two sets of x,y coordinates separated by a comma.\n";
   std::getline(std::cin, input1);
   std::getline(std::cin, input2);
+  std::getline(std::cin, point);
 
   if (input1.find(',') != std::string::npos) {
       x1 = std::stod(input1.substr(0, input1.find(',')));
       x2 = std::stod(input2.substr(0, input2.find(',')));
+      x3 = std::stod(point.substr(0, point.find(',')));
       y1 = std::stod(input1.substr(input1.find(',') + 1));
       y2 = std::stod(input2.substr(input2.find(',') + 1));
+      y3 = std::stod(point.substr(point.find(',') + 1));
       Point2D p1(x1, y1);
       Point2D p2(x2, y2);
-      Line2D line(p1, p2);
-      line.toString();
+      Point2D p3(x3, y3);
+      Line2D line1(p1, p2);
+      Line2D line2(p1, p3);
+      line1.contains(line2);
   }
 
   return 0;
