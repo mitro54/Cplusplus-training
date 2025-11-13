@@ -20,6 +20,7 @@ public:
   void push_back(int value);
   bool pop_front(int &value);
   bool pop_back(int &value);
+  int at(int value);
   int size();
 private:
   Node* head;
@@ -101,22 +102,33 @@ int List::size() {
   return len;
 }
 
+int List::at(int value) {
+  Node *current = head;
+  int idx = 0;
+  while (current != nullptr) {
+    if (current->value == value) return idx;
+    current = current->next;
+    idx++;
+  }
+  return -1;
+}
+
 int main() {
   List list;
-  list.push_front(0);
-  list.push_front(1);
-  list.push_front(2);
-  list.push_front(3);
+  for (int i = 0; i < 4; i++)
+    list.push_front(i);
   std::cout << std::endl;
 
   int value = 0;
   while (list.pop_front(value)) {}
   std::cout << std::endl;
-  list.push_back(0);
-  list.push_back(1);
-  list.push_back(2);
-  list.push_back(3);
+  for (int i = 0; i < 4; i++)
+    list.push_back(i);
   std::cout << std::endl;
   while (list.pop_back(value)) {}
+
+  for (int i = 0; i < 4; i++)
+    list.push_back(i);
+  std::cout << "\n" << "found num 2 at idx: " << list.at(2);
   return 0;
 }
