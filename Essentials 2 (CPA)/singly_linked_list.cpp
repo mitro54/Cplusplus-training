@@ -21,6 +21,7 @@ public:
   bool pop_front(int &value);
   bool pop_back(int &value);
   void insert_at(int index, int value);
+  void remove_at(int index);
   int at(int value);
   int size();
 private:
@@ -115,11 +116,10 @@ int List::at(int index) {
 }
 
 void List::insert_at(int index, int value) {
-
   if (index == 0) {
     push_front(value);
     return;
-  }\
+  }
 
   Node* current = head;
   for (int i = 0; i < index - 1; i++)
@@ -130,6 +130,29 @@ void List::insert_at(int index, int value) {
   current->next = new_node;
   if (new_node->next == nullptr) tail = new_node;
   len++;
+}
+
+void List::remove_at(int index) {
+    if (index < 0 || index >= len || head == nullptr) return;
+    if (index == 0) {
+        Node* old = head;
+        head = head->next;
+        delete old;
+        len--;
+        if (len == 0) tail = nullptr;
+        return;
+    }
+    Node* prev = head;
+    for (int i = 0; i < index - 1; i++)
+        prev = prev->next;
+    Node* node_to_delete = prev->next;
+    prev->next = node_to_delete->next;
+
+    if (node_to_delete == tail)
+        tail = prev;
+
+    delete node_to_delete;
+    len--;
 }
 
 void print_list(List &list) {
@@ -157,6 +180,10 @@ int main() {
   std::cout << "\n" << "found num 2 at idx: " << list.at(2) << "\n";
 
   list.insert_at(2, 23);
+  print_list(list);
+  std::cout << "\n";
+
+  list.remove_at(2);
   print_list(list);
   return 0;
 }
