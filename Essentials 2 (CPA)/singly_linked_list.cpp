@@ -15,6 +15,7 @@ Node::~Node() {}
 class List {
 public:
   List();
+  List(List &other);
   ~List();
   void push_front(int value);
   void push_back(int value);
@@ -31,6 +32,14 @@ private:
 };
 
 List::List() : head(nullptr), tail(nullptr) {}
+
+List::List(List &other): List() {
+  Node* n = other.head;
+  while (n != nullptr) {
+    push_back(n->value);
+    n = n->next;
+  }
+}
 
 List::~List() {
   while (head != nullptr) {
@@ -185,5 +194,9 @@ int main() {
 
   list.remove_at(2);
   print_list(list);
+
+  std::cout << "copy: \n";
+  List list2(list);
+  print_list(list2);
   return 0;
 }
