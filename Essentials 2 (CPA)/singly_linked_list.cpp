@@ -8,13 +8,9 @@ public:
   Node* next;
 };
 
-Node::Node(int val) : value(val), next(nullptr) {
-  std::cout << "+Node" << std::endl;
-}
+Node::Node(int val) : value(val), next(nullptr) {}
 
-Node::~Node() {
-  std::cout << "-Node" << std::endl;
-}
+Node::~Node() {}
 
 class List {
 public:
@@ -22,8 +18,10 @@ public:
   ~List();
   void push_front(int value);
   bool pop_front(int &value);
+  int size();
 private:
   Node* head;
+  int len = 0;
 };
 
 List::List() : head(nullptr) {}
@@ -40,6 +38,8 @@ void List::push_front(int value) {
   Node* new_head = new Node(value);
   new_head->next = head;
   head=new_head;
+  len++;
+  std::cout << "pushed " << value << " size: " << len << "\n";
 }
 
 bool List::pop_front(int &value) {
@@ -48,20 +48,24 @@ bool List::pop_front(int &value) {
   head = current->next;
   value = current->value;
   delete current;
+  len--;
+  std::cout << "popped " << value << " size: " << len << "\n";
   return true;
+}
+
+int List::size() {
+  return len;
 }
 
 int main() {
   List list;
+  list.push_front(0);
   list.push_front(1);
   list.push_front(2);
   list.push_front(3);
-  list.push_front(4);
+  std::cout << std::endl;
 
   int value = 0;
-  while (list.pop_front(value))
-  {
-    std::cout << value << std::endl;
-  }
+  while (list.pop_front(value)) {}
   return 0;
 }
