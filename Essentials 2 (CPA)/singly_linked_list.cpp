@@ -19,6 +19,7 @@ public:
   void push_front(int value);
   void push_back(int value);
   bool pop_front(int &value);
+  bool pop_back(int &value);
   int size();
 private:
   Node* head;
@@ -66,7 +67,33 @@ bool List::pop_front(int &value) {
   value = current->value;
   delete current;
   len--;
-  std::cout << "popped " << value << " size: " << len << "\n";
+  std::cout << "popped " << value << " from front, size: " << len << "\n";
+  return true;
+}
+
+bool List::pop_back(int &value) {
+  if (!head) return false;
+
+  if (head == tail) {
+    value = head->value;
+    delete head;
+    head = tail = nullptr;
+    len--;
+    std::cout << "popped " << value << " from back, size: " << len << "\n";
+    return true;
+  }
+
+  Node* prev = head;
+  while (prev->next != tail) {
+    prev = prev->next;
+  }
+
+  value = tail->value;
+  delete tail;
+  tail = prev;
+  tail->next = nullptr;
+  len--;
+  std::cout << "popped " << value << " from back, size: " << len << "\n";
   return true;
 }
 
@@ -90,6 +117,6 @@ int main() {
   list.push_back(2);
   list.push_back(3);
   std::cout << std::endl;
-  while (list.pop_front(value)) {}
+  while (list.pop_back(value)) {}
   return 0;
 }
