@@ -20,6 +20,7 @@ public:
   void push_back(int value);
   bool pop_front(int &value);
   bool pop_back(int &value);
+  void insert_at(int index, int value);
   int at(int value);
   int size();
 private:
@@ -102,15 +103,38 @@ int List::size() {
   return len;
 }
 
-int List::at(int value) {
-  Node *current = head;
-  int idx = 0;
-  while (current != nullptr) {
-    if (current->value == value) return idx;
-    current = current->next;
-    idx++;
+int List::at(int index) {
+  if (index < 0 || index >= len) {
+    return -1;
   }
-  return -1;
+  Node* current = head;
+  for (int i = 0; i < index; ++i) {
+    current = current->next;
+  }
+  return current->value;
+}
+
+void List::insert_at(int index, int value) {
+
+  if (index == 0) {
+    push_front(value);
+    return;
+  }\
+
+  Node* current = head;
+  for (int i = 0; i < index - 1; i++)
+    current = current->next;
+
+  Node* new_node = new Node(value);
+  new_node->next = current->next;
+  current->next = new_node;
+  if (new_node->next == nullptr) tail = new_node;
+  len++;
+}
+
+void print_list(List &list) {
+  for (int i = 0; i < list.size(); i++)
+    std::cout << "list[" << i << "] == " << list.at(i) << std::endl;
 }
 
 int main() {
@@ -129,6 +153,10 @@ int main() {
 
   for (int i = 0; i < 4; i++)
     list.push_back(i);
-  std::cout << "\n" << "found num 2 at idx: " << list.at(2);
+  print_list(list);
+  std::cout << "\n" << "found num 2 at idx: " << list.at(2) << "\n";
+
+  list.insert_at(2, 23);
+  print_list(list);
   return 0;
 }
