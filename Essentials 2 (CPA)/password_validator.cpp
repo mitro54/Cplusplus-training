@@ -9,14 +9,14 @@ public:
 
 class ExactValidator : public StringValidator {
 public:
-    std::string pass;
-    ExactValidator(std::string password) { pass = password; }
+    ExactValidator(std::string password): pass(password) {}
     virtual bool isValid(std::string input);
+private:
+    std::string pass;
 };
 
 bool ExactValidator::isValid(std::string input) {
-    if (input == pass) return true;
-    else return false;
+    return (input == pass);
 }
 
 class DummyValidator : public StringValidator {
@@ -30,7 +30,7 @@ bool DummyValidator::isValid(std::string input) {
 
 void printValid(StringValidator &validator, std::string input) {
     std::cout << "The string '" << input << "' is "
-              << (validator.isValid("hello") ? "valid" : "invalid");
+              << (validator.isValid(input) ? "valid" : "invalid") << "\n";
 }
 
 int main() {
