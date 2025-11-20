@@ -7,10 +7,17 @@ public:
     virtual bool isValid(std::string input) = 0;
 };
 
-class ExactValidator {
+class ExactValidator : public StringValidator {
 public:
-    ExactValidator(std::string name) {};
+    std::string pass;
+    ExactValidator(std::string password) { pass = password; }
+    virtual bool isValid(std::string input);
 };
+
+bool ExactValidator::isValid(std::string input) {
+    if (input == pass) return true;
+    else return false;
+}
 
 class DummyValidator : public StringValidator {
 public:
