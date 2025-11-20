@@ -67,7 +67,6 @@ bool PatternValidator::isValid(std::string sample) {
             } else newstr.erase();
         }
         if (newstr.length() == pattern.length()) {
-            std::cout << newstr << " " << pattern;
             return true;
         }
     }
