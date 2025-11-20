@@ -19,6 +19,18 @@ bool MinLengthValidator::isValid(std::string input) {
     return (input.size() >= len);
 }
 
+class MaxLengthValidator : public StringValidator {
+public:
+    MaxLengthValidator(int input): len(input) {}
+    virtual bool isValid(std::string input) {}
+private:
+    int len;
+};
+
+bool MaxLengthValidator::isValid(std::string input) {
+    return (input.size() <= len);
+}
+
 void printValid(StringValidator &validator, std::string input) {
     std::cout << "The string '" << input << "' is "
               << (validator.isValid(input) ? "valid" : "invalid") << "\n";
