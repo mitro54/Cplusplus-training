@@ -42,7 +42,7 @@ std::string Fraction::toString() {
     if (new_num == 0) return fracstr;
     return fracstr + " " + std::to_string(int(fabs(new_num))) + '/' + std::to_string(int(fabs(denominator)));
 
-  // if only fracs,  it returns fracs
+  // if only fracs, it returns fracs
   } else {
       if (numerator < 0 && denominator > 0) fracstr += "-";
       else if (numerator > 0 && denominator < 0) fracstr += "-";

@@ -111,7 +111,7 @@ int main(void) {
   Fraction prod = f1.times(f2);
   Fraction quot = f1.by(f2);
 
-  // format: a/b + c/d = mixed
+  // format a/b + c/d = mixed
   f1.display(); std::cout << " + "; f2.display(); std::cout << " = "; sum.displayMixed();  std::cout << "\n";
   f1.display(); std::cout << " - "; f2.display(); std::cout << " = "; diff.displayMixed(); std::cout << "\n";
   f1.display(); std::cout << " * "; f2.display(); std::cout << " = "; prod.displayMixed(); std::cout << "\n";
