@@ -39,38 +39,42 @@ private:
     std::string pattern;
 };
 
-bool PatternValidator::isValid(std::string sample) {
-    std::string newstr, nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
-    std::string punct = " .,=~><|!@#$%^&*()-_+{}[]:\\/\"'";
-
-    for (int i = 0; i < sample.length(); i++) {
-        for (int j = 0; j < pattern.length(); j++) {
-            if (pattern[j] == '?') {
-                newstr.push_back(sample[i]);
-                continue;
-
-            } else if (pattern[j] == 'D') {
-                if (nums.find(sample[i]) != std::string::npos) {
-                    newstr.push_back(sample[i]);
-                    break;
-                } else newstr.erase();
-
-            } else if (pattern[j] == 'A') {
-                if (chars.find(tolower(sample[i])) != std::string::npos) {
-                    newstr.push_back(sample[i]);
-                    break;
-                } else newstr.erase();
-
-            } else if (punct.find(sample[i]) != std::string::npos) {
-                newstr.push_back(sample[i]);
-                break;
-            } else newstr.erase();
-        }
-        if (newstr.length() == pattern.length()) {
-            return true;
+bool PatternValidator::isValid(std::string pattern) {
+    int d = 0, lc_a = 0, uc_a = 0, p = 0, l = 0;
+    for (int i = 0; i < pattern.length(); i++) {
+        if (pattern.length() > 8) l++;
+        if (isdigit(pattern[i])) d++;
+        if (ispunct(pattern[i])) p++;
+        if (isalpha(pattern[i])) {
+            if (toupper(pattern[i]) == pattern[i]) uc_a++;
+            if (tolower(pattern[i]) == pattern[i]) lc_a++;
         }
     }
-    return false;
+    if (
+        l != 0
+        && d != 0
+        && p != 0
+        && lc_a != 0
+        && uc_a != 0
+        ) return true;
+    else return false;
+    }
+
+class PasswordValidator : public StringValidator {
+public:
+    PasswordValidator(std::string pattern);
+    bool isValid(std::string input);
+private:
+    MinLengthValidator min_validator;
+    MaxLengthValidator max_validator;
+    PatternValidator pattern_validator;
+};
+
+PasswordValidator::PasswordValidator(std::string pattern):
+    min_validator(8), max_validator(32), pattern_validator(pattern) {}
+
+bool PasswordValidator::isValid(std::string input) {
+  return (min_validator.isValid(input) && max_validator.isValid(input) && pattern_validator.isValid(input));
 }
 
 void printValid(StringValidator &validator, std::string input) {
@@ -79,23 +83,8 @@ void printValid(StringValidator &validator, std::string input) {
 }
 
 int main() {
-  std::cout << "MinLengthValidator" << std::endl;
-  MinLengthValidator min(6);
-  printValid(min, "hello");
-  printValid(min, "welcome");
-  std::cout << std::endl;
-
-  std::cout << "MaxLengthValidator" << std::endl;
-  MaxLengthValidator max(6);
-  printValid(max, "hello");
-  printValid(max, "welcome");
-  std::cout << std::endl;
-
-  std::cout << "PatternValidator" << std::endl;
-  PatternValidator digit("D");
-  printValid(digit, "there are 2 types of sentences in the world");
-  printValid(digit, "valid and invalid ones");
-  std::cout << std::endl;
-
-  return 0;
+    std::string input = "Test@test111";
+    PasswordValidator tester(input);
+    printValid(tester, input);
+    return 0;
 }
