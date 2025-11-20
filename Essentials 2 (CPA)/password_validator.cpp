@@ -7,25 +7,16 @@ public:
     virtual bool isValid(std::string input) = 0;
 };
 
-class ExactValidator : public StringValidator {
+class MinLengthValidator : public StringValidator {
 public:
-    ExactValidator(std::string password): pass(password) {}
-    virtual bool isValid(std::string input);
+    MinLengthValidator(int input): len(input) {}
+    virtual bool isValid(std::string input) {}
 private:
-    std::string pass;
+    int len;
 };
 
-bool ExactValidator::isValid(std::string input) {
-    return (input == pass);
-}
-
-class DummyValidator : public StringValidator {
-public:
-    virtual bool isValid(std::string input);
-};
-
-bool DummyValidator::isValid(std::string input) {
-    return true;
+bool MinLengthValidator::isValid(std::string input) {
+    return (input.size() >= len);
 }
 
 void printValid(StringValidator &validator, std::string input) {
@@ -34,12 +25,23 @@ void printValid(StringValidator &validator, std::string input) {
 }
 
 int main() {
-    DummyValidator dummy;
-    printValid(dummy, "hello");
-    std::cout << std::endl;
+  std::cout << "MinLengthValidator" << std::endl;
+  MinLengthValidator min(6);
+  printValid(min, "hello");
+  printValid(min, "welcome");
+  std::cout << std::endl;
 
-    ExactValidator exact("secret");
-    printValid(exact, "hello");
-    printValid(exact, "secret");
-    return 0;
+  std::cout << "MaxLengthValidator" << std::endl;
+  MaxLengthValidator max(6);
+  printValid(max, "hello");
+  printValid(max, "welcome");
+  std::cout << std::endl;
+
+  std::cout << "PatternValidator" << std::endl;
+  PatternValidator digit("D");
+  printValid(digit, "there are 2 types of sentences in the world");
+  printValid(digit, "valid and invalid ones");
+  std::cout << std::endl;
+
+  return 0;
 }
