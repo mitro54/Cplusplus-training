@@ -17,13 +17,13 @@ int main(void) {
         for (int j = 0; j < pattern.length(); j++) {
             if (pattern[j] == '?') {
                 newstr.push_back(sample[i]);
-                break;
+                continue;
 
             } else if (pattern[j] == 'D') {
                 if (nums.find(sample[i]) != std::string::npos) {
                     newstr.push_back(sample[i]);
                     break;
-                };
+                } else newstr.erase();
 
             } else if (pattern[j] == 'A') {
                 if (chars.find(tolower(sample[i])) != std::string::npos) {
@@ -34,7 +34,7 @@ int main(void) {
             } else if (punct.find(sample[i]) != std::string::npos) {
                 newstr.push_back(sample[i]);
                 break;
-            }
+            } else newstr.erase();
         }
         if (newstr.length() == pattern.length()) {
             std::cout << newstr << "\n";
