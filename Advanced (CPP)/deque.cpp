@@ -8,7 +8,14 @@ enum CommandType {
 	MoveBackward
 };
 
-// add class etc here
+class RoboCommander {
+public:
+	void AddCommand(CommandType cmd);
+	void UndoCommand();
+private:
+	std::deque<CommandType> cmd_queue;
+};
+
 
 int main() {
 	// test code:
