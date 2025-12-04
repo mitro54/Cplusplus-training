@@ -3,7 +3,6 @@
 #include <vector>
 #include <algorithm>
 
-//code
 
 int main() {
 	std::vector<double> values = 
@@ -12,6 +11,11 @@ int main() {
 	std::cin >> start_value;
 	unsigned stop_value;
 	std::cin >> stop_value;
-	//code
+
+    auto it = std::count_if(values.begin(), values.end(),
+    [start_value, stop_value](double x) { return x >= start_value && x <= stop_value; });
+
+    std::cout << it << " elements are in the given range.";
+
 	return 0;
 }
