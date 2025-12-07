@@ -3,7 +3,17 @@
 #include <vector>
 #include <algorithm>
 
-// code
+struct AddVectors {
+    int operator() (int a, int b) {
+    return a + b;
+  }
+};
+
+struct MultiplyVectors {
+    int operator() (int a, int b) {
+    return a * b;
+  }
+};
 
 int main() {
 	std::vector<int> valuesA = { 1, 5, 2, 6, 3 };
@@ -13,7 +23,16 @@ int main() {
 	int value;
 	std::cin >> value;
 
-	//code
+    // result = A + B * C + value
+
+    // B * C
+    std::transform(valuesB.begin(), valuesB.end(), valuesC.begin(), results.begin(), MultiplyVectors());
+    
+    // A + result
+    std::transform(results.begin(), results.end(), valuesA.begin(), results.begin(), AddVectors());
+
+    // result + value for each
+    for (int n : results) std::cout << n + value << " ";
 
 	return 0;
 }
