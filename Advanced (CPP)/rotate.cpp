@@ -11,6 +11,9 @@ int main() {
     std::vector < int >::iterator it = rotated.begin();
     advance(it, 3);
     rotate(rotated.begin(), it, rotated.end());
+    // another solution:
+    // rotate(rotated.begin(), rotated.begin() + 3, rotated.end());
+
   
 	if (rotated== values) std::cout << "You did it" << '\n';
 	else std::cout << "Try again" << '\n';
