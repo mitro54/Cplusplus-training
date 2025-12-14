@@ -9,7 +9,12 @@ struct Country {
 	int area;
 };
 
-// code
+Country multiply(Country lhs, int value) {
+	Country country;
+	country.name = lhs.name;
+	country.area = lhs.area * value;
+	return country;
+}
 
 int main() {
 	std::vector <Country> countries = {
@@ -19,7 +24,10 @@ int main() {
 		{ "Russia", 17098 },{ "Canada", 9984 },
 		{ "Kazakhstan", 	2724 },{ "Algeria", 2381 }
 	};
-	
-	// code
+	std::vector<Country> countries_area_corrected(countries.size());
+	transform(countries.begin(), countries.end(), countries_area_corrected.begin(), std::bind2nd(std::ptr_fun(multiply), 1000));
+	for (auto country:countries_area_corrected) {
+		std::cout << country.name << " " << country.area << std::endl;
+	}
 	return 0;
 }
