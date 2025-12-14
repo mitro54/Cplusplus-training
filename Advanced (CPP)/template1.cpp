@@ -20,8 +20,8 @@ template<class T> std::string toString(T value) {
 
 
 int main() {	
-	int valuei ;
-	double valued ;
+	int valuei;
+	double valued;
 	std::cin >> valuei;
 	std::cin >> valued;
 	std::cout << signum(valuei) << std::endl;
