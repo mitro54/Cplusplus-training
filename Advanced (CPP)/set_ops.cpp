@@ -9,7 +9,9 @@ struct Country {
 	int area;
 };
 
-// code
+bool compare(Country lhs, Country rhs) {
+	return lhs.area < rhs.area;
+}
 
 int main() {
 	std::vector <Country> countries = {
@@ -24,7 +26,14 @@ int main() {
 		{ "Kazakhstan", 	2724 },{ "Algeria", 2381 }
 	};
 
-	// code
+	auto smallest_1 = min_element(countries.begin(), countries.end(), compare);
+	auto smallest_2 = min_element(countries_small.begin(), countries_small.end(), compare);
+	auto biggest_1 = max_element(countries.begin(), countries.end(), compare);
+	auto biggest_2 = max_element(countries_small.begin(), countries_small.end(), compare);
+	std::cout << smallest_1->name << " " << smallest_1->area << '\n';
+	std::cout << smallest_2->name << " " << smallest_2->area << '\n';
+	std::cout << biggest_1->name << " " << biggest_1->area << '\n';
+	std::cout << biggest_2->name << " " << biggest_2->area << '\n';
 	
 	return 0;
 }
